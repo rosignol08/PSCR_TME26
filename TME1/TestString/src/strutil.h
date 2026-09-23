@@ -3,7 +3,7 @@
 #define STRUTIL_H
 
 #include <cstddef> // for size_t
-
+#include <cstdlib>
 namespace pr
 {
 

@@ -1,0 +1,14 @@
+pour Testliste il manque :
+- le #include "List.h" dans list.cpp
+- le const dans void Chainon::print (std::ostream & os)
+- le List dans bool List::empty() {
+
+void List::push_front (const std::string& val) { est defini 2 fois dans H et dans Cpp
+
+dans la fonction size_t Chainon::length() faut retourner len
+dans la fonction void Chainon::print (std::ostream & os) const faut print dans le if
+
+dans size_t i = 0; faut mettre i en int
+faut monter operator<< dans pr
+
+à la fin du main faut faire delete [] str; pas delete str;

@@ -1,5 +1,5 @@
 {
-    "cmake.sourceDirectory": "/home/romaric/Documents/cours_M1/M1_S1/PSCR/PSCR-TME/TME1/TestString",
+    "cmake.sourceDirectory": "/home/romaric/Documents/cours_M1/M1_RED/PSCR/PSCR_TME26/TME1/HelloWorld",
     "files.associations": {
         "array": "cpp",
         "atomic": "cpp",
