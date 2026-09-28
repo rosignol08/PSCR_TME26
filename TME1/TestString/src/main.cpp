@@ -55,15 +55,16 @@ public:
         test_assert(copy != test_str, "newcopy should return a different pointer");
         test_assert(std::strcmp(copy, test_str) == 0, "newcopy contents should match original");
         delete[] copy;
-
+        
         const char* empty_str = "";
         char* empty_copy = newcopy(empty_str);
         test_assert(empty_copy != empty_str, "newcopy of empty should return different pointer");
         test_assert(std::strcmp(empty_copy, empty_str) == 0, "newcopy of empty contents should match");
+        //std::cout << "copy : " << empty_copy << " | original : " << empty_str << std::endl;
         delete[] empty_copy;
     }
 
-    /*
+    
     static void testCompare() {
         std::cout << "\n--- Testing compare ---" << std::endl;
         test_assert(compare("abc", "abc") == 0, "compare equal strings");
@@ -75,7 +76,7 @@ public:
         test_assert(compare("", "a") < 0, "empty < non-empty");
         test_assert(compare("a", "") > 0, "non-empty > empty");
     }
-    */
+    
 
     /*
     static void testConstructorAndOutput() {
@@ -235,17 +236,17 @@ public:
     static void runAllTests() {
         testLength();
         testNewcopy();
-        // testCompare();
-        // testConstructorAndOutput();
-        // testCopyConstructor();
-        // testAssignmentOperator();
-        // testOperatorEqual();
-        // testOperatorLess();
-        // testRelOps();
-        // testNewcat();
-        // testOperatorPlus();
-        // testMoveConstructor();
-        // testMoveAssignment();
+        testCompare();
+        //testConstructorAndOutput();
+        //testCopyConstructor();
+        //testAssignmentOperator();
+        //testOperatorEqual();
+        //testOperatorLess();
+        //testRelOps();
+        //testNewcat();
+        //testOperatorPlus();
+        //testMoveConstructor();
+        //testMoveAssignment();
 
         std::cout << "\nAll uncommented tests completed." << std::endl;
     }
