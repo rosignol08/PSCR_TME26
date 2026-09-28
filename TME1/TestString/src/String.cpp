@@ -12,8 +12,7 @@ namespace pr
 
     String::~String()
     {
-        std::cout << "String destructor called for: " << (data ? data : "(null)")
-                  << std::endl;
+        std::cout << "String destructor called for: " << (data ? data : "(null)") << std::endl;
         delete[] this;
     }
 

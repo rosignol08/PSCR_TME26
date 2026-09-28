@@ -23,11 +23,12 @@ char* newcopy(const char* s) {
     return copie;
 }
 
-//1 si a < b ou -1 sinon 0
+//1 si a > b ou -1 sinon 0
 int compare(const char* a, const char* b) {
     int result = 0;
     if(length(a) != length(b)){
-        if(length(a) < length(b)){
+        //std::cout << length(a) << " " << length(b) << std::endl;
+        if(length(a) > length(b)){
             result = 1;
         }else{
             result = -1;
@@ -37,21 +38,21 @@ int compare(const char* a, const char* b) {
         int score_a = 0;
         int score_b = 0;
         for(int i = 0; i < length(a) ; ++i){
-            score_a += atoi(a);
-            score_b += atoi(b);
+            score_a += a[i] -'0';
+            score_b += b[i] -'0';
             
         }
-        std::cout << "score A : " << score_a << std::endl;
-        std::cout << "score B : " << score_b << std::endl;
+        //std::cout << "score A : " << score_a << std::endl;
+        //std::cout << "score B : " << score_b << std::endl;
         if(score_a < score_b){
-            result = 1;
+            result = -1;
         }else if(score_a == score_b){
             result = 0;
         }else{
-            result = -1;
+            result = 1;
         }
     }
-    std::cout << " resultat : " << result << std::endl;
+    //std::cout << " resultat : " << result << std::endl;
     return result;
 }
 

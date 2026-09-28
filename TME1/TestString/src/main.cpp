@@ -78,7 +78,7 @@ public:
     }
     
 
-    /*
+    
     static void testConstructorAndOutput() {
         std::cout << "\n--- Testing String constructor and output ---" << std::endl;
         String s1("Hello, World!");
@@ -86,8 +86,7 @@ public:
         test_assert(contentsMatch(s1, String("Hello, World!")), "constructor contents match");
         // Destructor tested with valgrind and traces
     }
-    */
-
+    
     /*
     static void testCopyConstructor() {
         std::cout << "\n--- Testing copy constructor ---" << std::endl;
@@ -237,7 +236,7 @@ public:
         testLength();
         testNewcopy();
         testCompare();
-        //testConstructorAndOutput();
+        testConstructorAndOutput();
         //testCopyConstructor();
         //testAssignmentOperator();
         //testOperatorEqual();
