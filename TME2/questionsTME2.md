@@ -7,7 +7,7 @@ Instructions : copiez vos réponses dans ce fichier (sous la question correspond
 Réponse (collez une trace ici) :
 
 ```
-trace
+Found a total of 566193 words.
 ```
 
 
@@ -20,12 +20,16 @@ trace
 Réponse :
 
 Runtime debug avec trace :
+Total runtime (wall clock) : 2433 ms
 
 Runtime debug sans trace :
+Total runtime (wall clock) : 2135 ms
 
 Runtime release avec trace :
+Total runtime (wall clock) : 241 ms
 
 Runtime release sans trace :
+Total runtime (wall clock) : 195 ms
 
 (mesures nfs vs tmp si à la ppti)
 
@@ -36,14 +40,15 @@ Exécutez le programme sur le fichier WarAndPeace.txt fourni. Combien y a-t-il d
 Réponse (collez une trace ici) :
 
 ```
-trace
+Found 20333 unique words.
+Total runtime (wall clock) : 2033 ms mode release
 ```
 
 4) Modifiez le programme pour introduire le mode "freq" qui calcule le nombre d'occurrences de chaque mot (fréquence). 
 Pour cela, on adaptera le code précédent pour utiliser un vecteur qui stocke des `pair<string,int>` au lieu de stocker juste des string. 
 Afficher le nombre d'occurrences des mots "war", "peace" et "toto".
 
-Réponse :
+Réponse : fait
 
 
 5) Trier ce vecteur de paires par nombre d'occurrences décroissantes à l'aide de `std::sort` puis afficher les dix mots les plus fréquents. 
@@ -72,14 +77,44 @@ int main_sort () {
 	return 0;
 }
 ```
+``` mode debug
+Parsing ../WarAndPeace.txt (mode=freq)
+the : 34562
+and : 22148
+to : 16709
+of : 14990
+a : 10513
+he : 9809
+in : 8800
+his : 7965
+that : 7806
+was : 7327
+Found 20333 unique words.
+Total runtime (wall clock) : 27823 ms
 
-Réponse :
+war : 298
+peace : 114
 
+```
 
 6) Quelle est la complexité de ce code en temps et mémoire ? Donnez une trace avec temps d'exécution en mode release.
 
-
-Réponse :
+On a une complexitée On pour chaque mots On pour la recherche dans le vecteur et sort O(N logN) en temps.
+O n pour le vecteur et sort O(logN) en mémoire.
+```
+the : 34562
+and : 22148
+to : 16709
+of : 14990
+a : 10513
+he : 9809
+in : 8800
+his : 7965
+that : 7806
+was : 7327
+Found 20333 unique words.
+Total runtime (wall clock) : 3248 ms
+```
 
 
 
@@ -102,7 +137,37 @@ Réponse : Dans le fichier HashMap.h
 
 8) En appui sur une table de hash \texttt{HashMap<string,int>} associant des entiers (le nombre d'occurrence) aux mots, et reprendre les questions où l'on calculait de nombre d'occurrences des mots avec cette nouvelle structure de donnée. Ce sera le nouveau mode "freqhash". Pensez à déclarer le nouveau fichier dans `CMakeLists.txt`. Combien de temps prend le calcul ? Testez quelques valeurs pour la taille initiale de la table, e.g. 100, 1024, 10000 vu que la table ne grossit jamais actuellement. Gardez un setting qui fonctionne bien.
 
-Réponse : tracer les temps
+```
+Parsing ../WarAndPeace.txt (mode=freqhash)
+the : 34562
+and : 22148
+to : 16709
+of : 14990
+a : 10513
+he : 9809
+in : 8800
+his : 7965
+that : 7806
+was : 7327
+Found 20333 unique words.
+Total runtime (wall clock) : 478 ms
+
+
+et debug :
+Parsing ../WarAndPeace.txt (mode=freqhash)
+the : 34562
+and : 22148
+to : 16709
+of : 14990
+a : 10513
+he : 9809
+in : 8800
+his : 7965
+that : 7806
+was : 7327
+Found 20333 unique words.
+Total runtime (wall clock) : 4032 ms
+```
 
 9) On souhaite comme dans la version précédente afficher les 10 mots les plus fréquents.
 Ajoutez dans la table de hash une fonction `std::vector<std::pair<K,V>> toKeyValuePairs() const` qui convertit les entrées de la table en un vecteur de paires. Pour celà on parcourt chaque liste de chaque bucket. Contrôlez les résultats par rapport à la version "freq" simple.
