@@ -75,7 +75,7 @@ int main(int argc, char *argv[]) {
 
         // 2. Lancer le consommateur.
         std::thread worker(pr::treatImage, std::ref(fileQueue), std::ref(opts.outputFolder));
-
+        
         // 3. Insérer les chemins découverts.
         pr::findImageFiles(opts.inputFolder, [&](const std::filesystem::path& file) {
             fileQueue.push(file);
@@ -86,14 +86,72 @@ int main(int argc, char *argv[]) {
 
         // 5. Attendre la fin du consommateur.
         worker.join();
-    } else if (opts.mode == "pipe_mt") {
-        // Q3 : partir d’une copie du mode pipe.
-        std::cerr << "Mode pipe_mt a implementer (Q3).\n";
-        return 2;
+    }else if (opts.mode == "pipe_mt") {
+        // 1. Construire la file de chemins.
+        pr::FileQueue fileQueue(opts.queue_size);
+        std::vector <std::thread> workers;
+        // 2. Lancer les consommateurs.
+        for(int i = 0 ; i < opts.num_threads ; ++i){
+            workers.push_back(std::thread (pr::treatImage, std::ref(fileQueue), std::ref(opts.outputFolder)));
+        }
+        
+        // 3. Insérer les chemins découverts.
+        pr::findImageFiles(opts.inputFolder, [&](const std::filesystem::path& file) {
+            fileQueue.push(file);
+        });
+
+        // 4. Annoncer la fin des chemins.
+        for(int i = 0 ; i < opts.num_threads ; ++i){
+            fileQueue.push(pr::FILE_POISON);
+        }
+
+        // 5. Attendre la fin du consommateur.
+        for(int i = 0 ; i < opts.num_threads ; ++i){
+            workers[i].join();
+        }
     } else if (opts.mode == "mt_pipeline") {
-        // Q5 puis Q6 : connecter les étapes, puis paramétrer leurs effectifs.
-        std::cerr << "Mode mt_pipeline a implementer (Q5).\n";
-        return 2;
+        // 1. Construire la file de chemins.
+        pr::FileQueue fileQueue(opts.queue_size);
+        pr::ImageTaskQueue imageQueue(opts.queue_size);
+        pr::ImageTaskQueue resizedQueue(opts.queue_size);
+        std::vector <std::thread> thread_reader;
+        std::vector <std::thread> thread_resizer;
+        std::vector <std::thread> thread_saver;
+        // 2. Lancer les consommateurs.
+        //les threads par étapes
+        for(int i = 0 ; i < opts.nbread; ++i){
+            thread_reader.push_back (std::thread(pr::reader, std::ref(fileQueue), std::ref(imageQueue)));
+        }
+        for(int i = 0 ; i < opts.nbresize; ++i){
+            thread_resizer.push_back (std::thread (pr::resizer, std::ref(imageQueue), std::ref(resizedQueue)));
+        }
+        for(int i = 0 ; i < opts.nbwrite; ++i){
+            thread_saver.push_back (std::thread (pr::saver, std::ref(resizedQueue), std::ref(opts.outputFolder)));
+        }
+        // 3. Insérer les chemins découverts.
+        pr::findImageFiles(opts.inputFolder, [&](const std::filesystem::path& file) {
+            fileQueue.push(file);
+        });
+
+        // 4. Annoncer la fin des chemins.
+        for(int i = 0 ; i < opts.nbread; ++i){
+            fileQueue.push(pr::FILE_POISON);
+        }
+        for(int i = 0 ; i < opts.nbread; ++i){
+            thread_reader[i].join();
+        }
+        for(int i = 0 ; i < opts.nbresize; ++i){
+            imageQueue.push(pr::TASK_POISON);
+        }
+        for(int i = 0 ; i < opts.nbresize; ++i){
+            thread_resizer[i].join();
+        }
+        for(int i = 0 ; i < opts.nbwrite; ++i){
+            resizedQueue.push(pr::TASK_POISON);
+        }
+        for(int i = 0 ; i < opts.nbwrite; ++i){
+            thread_saver[i].join();
+        }
     } else {
         std::cerr << "Unknown mode '" << opts.mode << "'. Supported modes: resize, pipe, pipe_mt, mt_pipeline" << std::endl;
         return 1;
