@@ -15,25 +15,35 @@ class Queue {
     std::deque<T*> queue_;
     size_t capacity_;
     std::mutex m;
+    condition_variable notfull;
+    condition_variable notempty;
 public:
     explicit Queue(size_t capacity) : capacity_(capacity) {}
 
     bool push(T* value) {
         std::unique_lock lock(m);
-        if (queue_.size() == capacity_) {
-            return false;
-        }
+        //if (queue_.size() == capacity_) {
+        //    return false;
+        //}
+        while(queue_.size()==capacity){
+		    notFull.wait(lock);//la condition variable 1
+	    }
         queue_.push_back(value);
+        notempty.notify_one();
         return true;
     }
 
     T* pop() {
         std::unique_lock lock(m);
-        if (queue_.empty()) {
-            return nullptr;
-        }
+        while (queue.empty()){
+	    	notempty.wait(lock);
+	    }
+        //if (queue_.empty()) {
+        //    return nullptr; //je bloque aulieu de retourner un truc null ?
+        //}
         T* value = queue_.front();
         queue_.pop_front();
+        notfull.notify_one();
         return value;
     }
 

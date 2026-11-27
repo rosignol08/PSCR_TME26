@@ -58,14 +58,14 @@ int main(int argc, char *argv[]) {
   if (opts.mode == "sequential") {
     renderer.render(scene, img);
     // Décommentez chaque mode au fur et à mesure que vous l'implantez.
-    /*
-           } else if (opts.mode == "ThreadPerPixel") {
-           renderer.renderThreadPerPixel(scene, img);
-       } else if (opts.mode == "ThreadPerRow") {
-           renderer.renderThreadPerRow(scene, img);
-       } else if (opts.mode == "ThreadManual") {
-           renderer.renderThreadManual(scene, img, opts.nbthread);
-       } else if (opts.mode == "PoolPixel") {
+    } else if (opts.mode == "ThreadPerPixel") {
+      renderer.renderThreadPerPixel(scene, img);
+      }else if (opts.mode == "ThreadPerRow") {
+        renderer.renderThreadPerRow(scene, img);
+        } else if (opts.mode == "ThreadManual") {
+          renderer.renderThreadManual(scene, img, opts.nbthread);
+          /*
+          } else if (opts.mode == "PoolPixel") {
            renderer.renderPoolPixel(scene, img, opts.nbthread);
        } else if (opts.mode == "PoolRow") {
            renderer.renderPoolRow(scene, img, opts.nbthread);
